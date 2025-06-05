@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../aosqe-tools"
+		},
+		{
+			"path": "../distributed-tracing-qe"
+		},
+		{
+			"path": "../development-tools"
+		}
+	],
+	"settings": {}
+}

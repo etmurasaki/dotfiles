@@ -76,3 +76,7 @@ spec:
   source: observability-operator
   sourceNamespace: openshift-marketplace
 EOF
+
+oc new-project perses-dev
+
+oc project openshift-cluster-observability-operator

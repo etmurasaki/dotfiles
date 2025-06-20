@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: perses-prometheus-api-editor
+rules:
+- apiGroups:
+  - "monitoring.coreos.com"
+  resources:
+  - "prometheuses/api"
+  verbs:
+  - "get"
+  - "list"
+  - "watch"
+  - "create"
+  - "update"

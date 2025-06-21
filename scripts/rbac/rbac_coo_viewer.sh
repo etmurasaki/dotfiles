@@ -1051,7 +1051,6 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: user2-reader
-  namespace: perses-dev
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io

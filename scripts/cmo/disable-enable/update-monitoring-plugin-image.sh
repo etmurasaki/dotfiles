@@ -30,3 +30,5 @@ echo "--------------------------------"
 csv=$(oc get deployment monitoring-plugin -n openshift-monitoring -o yaml)
 echo "${csv}"
 echo "--------------------------------"
+
+rm -f "${CMO_FILE}"

@@ -87,6 +87,7 @@ spec:
       name: logging-loki
     logsLimit: 50
     timeout: 30s
+    schema: select
 EOF
 
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+oc create namespace observability-operator
+
+oc label namespace  observability-operator openshift.io/cluster-monitoring="true"
+
+oc project observability-operator
+
+oc new-project perses-dev
+
+# operator-sdk run bundle quay.io/rh-ee-emurasak/observability-operator-bundle:1.2.0-gabriel --namespace observability-operator --security-context-config restricted
+

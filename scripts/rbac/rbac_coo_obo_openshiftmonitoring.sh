@@ -1032,10 +1032,11 @@ rules:
 EOF
 
 oc apply -f - <<EOF
-kind: ClusterRoleBinding
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: user1-reader
+  namespace: openshift-monitoring
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io
@@ -1047,10 +1048,11 @@ roleRef:
 EOF
 
 oc apply -f - <<EOF
-kind: ClusterRoleBinding
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: user2-reader
+  namespace: openshift-monitoring
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io

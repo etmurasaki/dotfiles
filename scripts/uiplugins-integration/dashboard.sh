@@ -29,7 +29,7 @@ data:
           direct_url: "https://thanos-querier.openshift-monitoring.svc.cluster.local:9091"
 EOF
 
-cd /Users/emurasak/workspace/dotfiles-eve/scripts/uiplugins-integration
+cd /Users/emurasak/workspace/dotfiles-eve0525/scripts/uiplugins-integration
 oc create configmap test-db-plugin-admin --from-file=prometheus.json -n openshift-config-managed
 oc -n openshift-config-managed label cm test-db-plugin-admin console.openshift.io/dashboard=true
 

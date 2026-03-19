@@ -1,0 +1,43 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: custom-alert-rules-eve
+  namespace: eve
+  labels:
+    openshift.io/prometheus-rule-evaluation-scope: leaf-prometheus
+spec:
+  groups:
+    - name: alertrule-testing-eve
+      rules:
+      - alert: Watchdog-eve
+        annotations:
+          summary: An alert that should always be firing to certify that Alertmanager is working properly.
+          description: This is an alert meant to ensure that the entire alerting pipeline is functional.
+        expr: vector(1)
+        labels:
+          instance: "local"
+          cluster: "local"
+          clusterID: "111111111"
+          severity: info
+      - alert: Watchdog-spoke-eve
+        annotations:
+          summary: An alert that should always be firing to certify that Alertmanager is working properly.
+          description: This is an alert meant to ensure that the entire alerting pipeline is functional.
+        expr: vector(1)
+        labels:
+          instance: "spoke"
+          cluster: "spoke"
+          clusterID: "22222222"
+          severity: warning
+    - name: cluster-health-eve
+      rules:
+      - alert: ClusterCPUHealth-jb-eve
+        annotations:
+          summary: Notify when CPU utilization on a cluster is greater than the defined utilization limit
+          description: "The cluster has a high CPU usage: {{ $value }} core for {{ $labels.cluster }} {{ $labels.clusterID }}."
+        expr: |
+          max(cluster:cpu_usage_cores:sum) by (clusterID, cluster, prometheus) > 0
+        labels:
+          cluster: "{{ $labels.cluster }}"
+          prometheus: "{{ $labels.prometheus }}"
+          severity: critical

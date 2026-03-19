@@ -1,0 +1,26 @@
+apiVersion: perses.dev/v1alpha2
+kind: PersesDatasource
+metadata:
+  name: tempo-datasource
+  namespace: chainsaw-multitenancy
+spec:
+  config:
+    display:
+      name: "Tempo Datasource"
+    default: true
+    plugin:
+      kind: "TempoDatasource"
+      spec:
+        proxy:
+          kind: HTTPProxy
+          spec:
+            url: https://tempo-simplest-gateway.chainsaw-multitenancy.svc.cluster.local:8080/api/traces/v1/dev/tempo
+            headers:
+              X-Scope-OrgID: dev
+            secret: tempo-datasource-secret
+  client:
+    tls:
+      enable: true
+      caCert:
+        type: file
+        certPath: /ca/service-ca.crt

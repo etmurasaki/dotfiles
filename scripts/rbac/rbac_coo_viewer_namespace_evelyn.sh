@@ -1035,36 +1035,6 @@ oc apply -f - <<EOF
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: user1-reader
-subjects:
-  - kind: User
-    apiGroup: rbac.authorization.k8s.io
-    name: user1
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: user-reader
-EOF
-
-oc apply -f - <<EOF
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: user2-reader
-subjects:
-  - kind: User
-    apiGroup: rbac.authorization.k8s.io
-    name: user2
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: user-reader
-EOF
-
-oc apply -f - <<EOF
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
   name: user1-perses-prometheus-api-editor
 subjects:
   - kind: User
@@ -1077,16 +1047,33 @@ roleRef:
 EOF
 
 oc apply -f - <<EOF
-kind: ClusterRoleBinding
+kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: user2-perses-prometheus-api-editor
+  name: user1-viewer-dashboard
+  namespace: evelyn
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io
-    name: user2
+    name: user1
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: perses-prometheus-api-editor
+  name: persesdashboard-viewer-role
+EOF
+
+oc apply -f - <<EOF
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: user1-viewer-datasource
+  namespace: evelyn
+subjects:
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: user1
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: persesdatasource-viewer-role
 EOF

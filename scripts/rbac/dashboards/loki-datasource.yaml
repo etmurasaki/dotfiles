@@ -1,0 +1,30 @@
+apiVersion: perses.dev/v1alpha2
+kind: PersesDatasource
+metadata:
+  name: loki-datasource
+  namespace: openshift-logging
+spec:
+  config:
+    display:
+      name: "Loki Datasource (Application Logs)"
+    default: true
+    plugin:
+      kind: "LokiDatasource"
+      spec:
+        proxy:
+          kind: HTTPProxy
+          spec:
+            # URL structure for LokiStack with openshift-logging tenancy:
+            # https://{gateway-svc}.{ns}.svc:8080/api/logs/v1/{tenant}
+            # Perses will append /loki/api/v1/... for queries
+            url: https://logging-loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/application
+            headers:
+              X-Scope-OrgID: application
+            # IMPORTANT: Must reference secret for TLS config
+            secret: loki-datasource-secret
+  client:
+    tls:
+      enable: true
+      caCert:
+        type: file
+        certPath: /ca/service-ca.crt

@@ -4,28 +4,11 @@ echo COO install through FBC
 kubectl patch Scheduler cluster --type='json' -p '[{ "op": "replace", "path": "/spec/mastersSchedulable", "value": true }]'
 
 read -p 'fbc_image ' fbc_image
-oc apply -f - <<EOF
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    openshift.io/cluster-monitoring: "true"
-  name: openshift-cluster-observability-operator
-EOF
-
-oc apply -f - <<EOF
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-  namespace: openshift-cluster-observability-operator
-  name: og-global
-  labels:
-    og_label: openshift-cluster-observability-operator
-spec:
-  upgradeStrategy: Default
-EOF
 
 fbc_image=$fbc_image
+
+oc project openshift-cluster-observability-operator
+
 oc apply -f - <<EOF
 ---
 apiVersion: operators.coreos.com/v1alpha1
@@ -58,9 +41,6 @@ spec:
   - mirrors:
     - registry.stage.redhat.io
     source: registry.redhat.io
-  - mirrors:
-    - brew.registry.redhat.io/rh-osbs/iib
-    source: registry-proxy.engineering.redhat.com/rh-osbs/iib
 EOF
 
 oc apply -f - <<EOF
@@ -79,7 +59,5 @@ spec:
   source: observability-operator
   sourceNamespace: openshift-marketplace
 EOF
-
-oc new-project perses-dev
 
 oc project openshift-cluster-observability-operator

@@ -90,74 +90,74 @@ spec:
       storage: 10Gi
 EOF
       
-# oc apply -f - <<EOF
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: openshift-logging
-#   labels:
-#     openshift.io/cluster-monitoring: "true"
-# EOF
+oc apply -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: openshift-logging
+  labels:
+    openshift.io/cluster-monitoring: "true"
+EOF
 
-# oc apply -f - <<EOF
-# apiVersion: operators.coreos.com/v1
-# kind: OperatorGroup
-# metadata:
-#   namespace: openshift-logging
-#   name: openshift-logging
-#   labels:
-#     og_label: openshift-logging
-# spec:
-#   targetNamespaces:
-#   - openshift-logging
-#   upgradeStrategy: Default
-# EOF
+oc apply -f - <<EOF
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  namespace: openshift-logging
+  name: openshift-logging
+  labels:
+    og_label: openshift-logging
+spec:
+  targetNamespaces:
+  - openshift-logging
+  upgradeStrategy: Default
+EOF
 
-# oc apply -f - <<EOF
-# apiVersion: operators.coreos.com/v1alpha1
-# kind: Subscription
-# metadata:
-#   name: cluster-logging
-#   namespace: openshift-logging
-# spec:
-#   channel: "stable-6.2"
-#   installPlanApproval: Automatic
-#   name: cluster-logging
-#   source: redhat-operators
-#   sourceNamespace: openshift-marketplace
-# EOF
+oc apply -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: cluster-logging
+  namespace: openshift-logging
+spec:
+  channel: "stable-6.2"
+  installPlanApproval: Automatic
+  name: cluster-logging
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+EOF
 
-# oc apply -f - <<EOF
-# kind: Namespace
-# apiVersion: v1
-# metadata:
-#   name: openshift-operators-redhat
-#   annotations:
-#     openshift.io/node-selector: ""
-#   labels:
-#     openshift.io/cluster-logging: "true"
-#     openshift.io/cluster-monitoring: "true"
-# EOF
+oc apply -f - <<EOF
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: openshift-operators-redhat
+  annotations:
+    openshift.io/node-selector: ""
+  labels:
+    openshift.io/cluster-logging: "true"
+    openshift.io/cluster-monitoring: "true"
+EOF
 
-# oc apply -f - <<EOF
-# apiVersion: operators.coreos.com/v1
-# kind: OperatorGroup
-# metadata:
-#   name: openshift-operators-redhat
-#   namespace: openshift-operators-redhat
-# spec: {}
-# EOF
+oc apply -f - <<EOF
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: openshift-operators-redhat
+  namespace: openshift-operators-redhat
+spec: {}
+EOF
 
-# oc apply -f - <<EOF
-# apiVersion: operators.coreos.com/v1alpha1
-# kind: Subscription
-# metadata:
-#   name: loki-operator
-#   namespace: openshift-operators-redhat
-# spec:
-#   channel: "stable-6.2"
-#   installPlanApproval: Automatic
-#   name: loki-operator
-#   source: redhat-operators
-#   sourceNamespace: openshift-marketplace
-# EOF
+oc apply -f - <<EOF
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: loki-operator
+  namespace: openshift-operators-redhat
+spec:
+  channel: "stable-6.2"
+  installPlanApproval: Automatic
+  name: loki-operator
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace
+EOF

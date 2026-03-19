@@ -1035,11 +1035,11 @@ oc apply -f - <<EOF
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: user1-reader
+  name: testuser-1-reader
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io
-    name: user1
+    name: testuser-1
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1050,11 +1050,11 @@ oc apply -f - <<EOF
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: user2-reader
+  name: testuser-2-reader
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io
-    name: user2
+    name: testuser-2
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1065,11 +1065,11 @@ oc apply -f - <<EOF
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: user1-perses-prometheus-api-editor
+  name: testuser-1-perses-prometheus-api-editor
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io
-    name: user1
+    name: testuser-1
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -1080,13 +1080,77 @@ oc apply -f - <<EOF
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: user2-perses-prometheus-api-editor
+  name: testuser-2-perses-prometheus-api-editor
 subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io
-    name: user2
+    name: testuser-2
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: perses-prometheus-api-editor
+EOF
+
+oc apply -f - <<EOF
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: testuser-1-viewer-dashboard
+  namespace: openshift-cluster-observability-operator
+subjects:
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: testuser-1
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: persesdashboard-viewer-role
+EOF
+
+oc apply -f - <<EOF
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: testuser-2-viewer-dashboard
+  namespace: perses-dev
+subjects:
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: testuser-2
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: persesdashboard-viewer-role
+EOF
+
+oc apply -f - <<EOF
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: testuser-1-viewer-datasource
+  namespace: openshift-cluster-observability-operator
+subjects:
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: testuser-1
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: persesdatasource-viewer-role
+EOF
+
+oc apply -f - <<EOF
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: testuser-2-viewer-datasource
+  namespace: perses-dev
+subjects:
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: testuser-2
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: persesdatasource-viewer-role
 EOF

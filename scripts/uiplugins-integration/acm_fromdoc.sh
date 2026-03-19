@@ -2,41 +2,39 @@
 
 kubectl patch Scheduler cluster --type='json' -p '[{ "op": "replace", "path": "/spec/mastersSchedulable", "value": true }]'
 
-# oc apply -f - <<EOF
-# apiVersion: v1
-# kind: Namespace
-# metadata:
-#   name: open-cluster-management
-# ---
-# apiVersion: operators.coreos.com/v1
-# kind: OperatorGroup
-# metadata:
-#   namespace: open-cluster-management
-#   name: og-global
-#   labels:
-#     og_label: open-cluster-management
-# spec:
-#   targetNamespaces:
-#   - open-cluster-management
-#   upgradeStrategy: Default
-# EOF
-# oc apply -f - <<EOF
-# ---
-# apiVersion: operators.coreos.com/v1alpha1
-# kind: Subscription
-# metadata:
-#   labels:
-#     operators.coreos.com/advanced-cluster-management.open-cluster-management: ""
-#   name: advanced-cluster-management
-#   namespace: open-cluster-management
-# spec:
-#   installPlanApproval: Automatic
-#   name: advanced-cluster-management
-#   source: redhat-operators
-#   sourceNamespace: openshift-marketplace
-# EOF
+oc apply -f - <<EOF
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: open-cluster-management
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  namespace: open-cluster-management
+  name: og-global
+  labels:
+    og_label: open-cluster-management
+spec:
+  targetNamespaces:
+  - open-cluster-management
+  upgradeStrategy: Default
+EOF
+oc apply -f - <<EOF
+---
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: acm-operator-subscription
+spec:
+  sourceNamespace: openshift-marketplace
+  source: redhat-operators
+  channel: release-2.14
+  installPlanApproval: Automatic
+  name: advanced-cluster-management
+EOF
 
- oc create ns open-cluster-management-observability
+oc create ns open-cluster-management-observability
 
 oc apply -f - <<EOF
 apiVersion: apps/v1

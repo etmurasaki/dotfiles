@@ -8,5 +8,6 @@ oc project observability-operator
 
 oc new-project perses-dev
 
-operator-sdk run bundle quay.io/rh-ee-pyurkovi/observability-operator-bundle:1.2.1-short-time --namespace observability-operator --security-context-config restricted
+# operator-sdk run bundle quay.io/rh-ee-pyurkovi/observability-operator-bundle:1.2.1-short-time --namespace observability-operator --security-context-config restricted
+operator-sdk run bundle quay.io/gbernal/observability-operator-bundle:1.2.1-dev-6 --namespace observability-operator --security-context-config restricted
 

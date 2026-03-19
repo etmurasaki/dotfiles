@@ -1,0 +1,102 @@
+# =============================================================================
+# PersesGlobalDatasources - Accessible from ANY namespace/project
+# =============================================================================
+# These global datasources can be used in dashboards created in any namespace,
+# unlike PersesDatasource which is scoped to a specific namespace.
+#
+# Use case: Create a central observability dashboard in namespace "observability"
+# that queries traces from "chainsaw-multitenancy" and logs from "openshift-logging"
+# =============================================================================
+
+---
+# =============================================================================
+# TEMPO - Global Datasource for Traces
+# =============================================================================
+apiVersion: perses.dev/v1alpha2
+kind: PersesGlobalDatasource
+metadata:
+  name: tempo-global
+spec:
+  config:
+    display:
+      name: "Tempo (Global - Traces)"
+    default: false
+    plugin:
+      kind: "TempoDatasource"
+      spec:
+        proxy:
+          kind: HTTPProxy
+          spec:
+            # TempoStack in chainsaw-multitenancy namespace
+            url: https://tempo-simplest-gateway.chainsaw-multitenancy.svc.cluster.local:8080/api/traces/v1/dev/tempo
+            headers:
+              X-Scope-OrgID: dev
+            secret: tempo-global-secret
+  client:
+    tls:
+      enable: true
+      caCert:
+        type: file
+        certPath: /ca/service-ca.crt
+
+---
+# =============================================================================
+# LOKI - Global Datasource for Application Logs
+# =============================================================================
+apiVersion: perses.dev/v1alpha2
+kind: PersesGlobalDatasource
+metadata:
+  name: loki-global-application
+spec:
+  config:
+    display:
+      name: "Loki (Global - Application Logs)"
+    default: false
+    plugin:
+      kind: "LokiDatasource"
+      spec:
+        proxy:
+          kind: HTTPProxy
+          spec:
+            # LokiStack in openshift-logging namespace
+            url: https://logging-loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/application
+            headers:
+              X-Scope-OrgID: application
+            secret: loki-global-application-secret
+  client:
+    tls:
+      enable: true
+      caCert:
+        type: file
+        certPath: /ca/service-ca.crt
+
+---
+# =============================================================================
+# LOKI - Global Datasource for Infrastructure Logs
+# =============================================================================
+apiVersion: perses.dev/v1alpha2
+kind: PersesGlobalDatasource
+metadata:
+  name: loki-global-infrastructure
+spec:
+  config:
+    display:
+      name: "Loki (Global - Infrastructure Logs)"
+    default: false
+    plugin:
+      kind: "LokiDatasource"
+      spec:
+        proxy:
+          kind: HTTPProxy
+          spec:
+            # LokiStack in openshift-logging namespace
+            url: https://logging-loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/infrastructure
+            headers:
+              X-Scope-OrgID: infrastructure
+            secret: loki-global-infrastructure-secret
+  client:
+    tls:
+      enable: true
+      caCert:
+        type: file
+        certPath: /ca/service-ca.crt
